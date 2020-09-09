@@ -1,6 +1,6 @@
 const express = require("express")
 
-const postRouter = require("./data/post/posts-router.js")
+const posts_Router = require("./data/posts/posts_Router.js")
 
 const server = express();
 
@@ -13,7 +13,7 @@ server.get("/", (req, res) => {
     )
 })
 
-server.use("/api/posts", posts-Router);
+server.use("/api/posts", posts_Router);
 
 server.listen(5000, () => {
     console.log("running localhost: 5000")

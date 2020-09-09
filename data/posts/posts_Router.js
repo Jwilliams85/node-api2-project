@@ -1,16 +1,11 @@
 const express = require("express");
 
-const db = require("../db.js");
-
 const router = express.Router();
 
-let comment = {
-    text:"",
-    post_id:"", 
-    created_at: Data.now(),
-    updated_at: Data.now()
-};
+const db = require("../db.js");
 
+
+//handles requests to api/data/posts/posts-Router/:id
 router.get("/", (req, res) => {
     db.find()
     .then((posts) => {
@@ -61,8 +56,26 @@ router.get("/:id/comments", (req, res) => {
         .status(500)
         .json({error: "The comment information could not be retrieved."})
         .end();
-    })
-})
+    });
+});
+
+router.post("/", (req, res) => {
+    if (!req.body.title || !req.body.contents) {
+        res.status(400).json({
+            message: "please make sure to send a valid title and valid contents",
+        });
+    } else {
+        db.insert(req.body)
+        .then((posts) => {
+            res.status(201).json(posts);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({ errormessage: "error getting data"})
+        })
+    }
+});
+
 
 router.post("/:id/comments", (req, rest) => {
     const id =req.params.id;
